@@ -4,6 +4,8 @@ import br.cefetmg.games.movement.AlgoritmoMovimentacao;
 import br.cefetmg.games.movement.Direcionamento;
 import br.cefetmg.games.movement.Pose;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.math.Vector3;
+import static java.lang.Math.min;
 
 /**
  * Guia o agente de forma a fugir na direção contrária ao alvo.
@@ -13,24 +15,25 @@ import com.badlogic.gdx.Input.Keys;
 public class Fugir extends AlgoritmoMovimentacao {
 
     private static final char NOME = 'f';
-
+    
     public Fugir(float maxVelocidade) {
         super(NOME);
+        this.maxVelocidade = maxVelocidade;
     }
 
     @Override
     public Direcionamento guiar(Pose agente) {
         Direcionamento output = new Direcionamento();
-
-        // calcula que direção tomar (configura um objeto Direcionamento 
-        // e o retorna)
-        // ...
-        // super.alvo já contém a posição do alvo
-        // agente (parâmetro) é a pose do agente que estamos guiando
-        // ...
+        output.velocidade = new Vector3(    (agente.posicao.x - super.alvo.getObjetivo().x), 
+                                            (agente.posicao.y - super.alvo.getObjetivo().y), 
+                                            (agente.posicao.z - super.alvo.getObjetivo().z));
+        output.velocidade.nor();
+        output.velocidade.x *= maxVelocidade;
+        output.velocidade.y *= maxVelocidade;
+        output.velocidade.z *= maxVelocidade;
+        agente.olharNaDirecaoDaVelocidade(output.velocidade);
         return output;
     }
-
     @Override
     public int getTeclaParaAtivacao() {
         return Keys.F;

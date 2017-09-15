@@ -18,4 +18,8 @@ public class Direcionamento {
         velocidade = new Vector3();
         rotacao = 0;
     }
+
+    public void rotacao(float f) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

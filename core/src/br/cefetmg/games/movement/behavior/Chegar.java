@@ -11,15 +11,15 @@ import com.badlogic.gdx.math.Vector3;
  *
  * @author Flávio Coutinho <fegemo@cefetmg.br>
  */
-public class Buscar extends AlgoritmoMovimentacao {
+public class Chegar extends AlgoritmoMovimentacao {
 
-    private static final char NOME = 's';
+    private static final char NOME = 'c';
 
-    public Buscar(float maxVelocidade) {
+    public Chegar(float maxVelocidade) {
         this(NOME, maxVelocidade);
     }
 
-    protected Buscar(char nome, float maxVelocidade) {
+    protected Chegar(char nome, float maxVelocidade) {
         super(nome);
         this.maxVelocidade = maxVelocidade;
     }
@@ -27,18 +27,28 @@ public class Buscar extends AlgoritmoMovimentacao {
     @Override
     public Direcionamento guiar(Pose agente) {
         Direcionamento output = new Direcionamento();
+        float radius = 1;
+        double time = 0.25;
         output.velocidade = new Vector3(    (super.alvo.getObjetivo().x - agente.posicao.x),
                                             (super.alvo.getObjetivo().y - agente.posicao.y),
                                             (super.alvo.getObjetivo().z - agente.posicao.z));
-        output.velocidade.nor();
-        output.velocidade.x *= maxVelocidade;
-        output.velocidade.y *= maxVelocidade;
-        output.velocidade.z *= maxVelocidade;
+        if(output.velocidade.len() >= radius)
+            return null;
+        output.velocidade.x /= time;
+        output.velocidade.y /= time;
+        output.velocidade.z /= time;
+        if(output.velocidade.len() <= maxVelocidade){
+            output.velocidade.nor();
+            output.velocidade.x *= maxVelocidade;
+            output.velocidade.y *= maxVelocidade;
+            output.velocidade.z *= maxVelocidade;  
+        }
         agente.olharNaDirecaoDaVelocidade(output.velocidade);
         return output;
     }
+
     @Override
     public int getTeclaParaAtivacao() {
-        return Keys.S;
+        return Keys.C;
     }
 }
